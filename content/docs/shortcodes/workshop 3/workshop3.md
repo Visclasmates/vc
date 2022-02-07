@@ -209,14 +209,17 @@ function windowResized() {
 
 2. Fragmen-Shader. Usamos como fuente el fragmen.shader de otro del grupo 7, al buscar ejemplos en github, 
    Fue tomado como referencia para correr el ejemplo de clase me disculpo por el error de citarlo pues pense que era un ejemplo de clase. 
-   https://github.com/Computacion-Visual-Gr7/vc/blob/main/content/sketches/shaders/photomosaic.frag
+   {{</* button href="https://github.com/Computacion-Visual-Gr7/vc/blob/main/content/sketches/shaders/photomosaic.frag" */>}}Contribute{{</* /button */>}}
+
 
 3. Otras implementaciones en el codigo de coherencia espacial.
-   https://visualcomputing.github.io/docs/shaders/spatial_coherence/
+   {{</* button href="https://visualcomputing.github.io/docs/shaders/spatial_coherence/" */>}}Contribute{{</* /button */>}}
+   
 
 4. Otras referencias de implementaciones semestres anteriores.
-   https://ccgomezn.github.io/vc/
-   https://edprietov.github.io/vc/
+    {{</* button href="https://ccgomezn.github.io/vc/" */>}}Contribute{{</* /button */>}}
+    {{</* button href="https://edprietov.github.io/vc/" */>}}Contribute{{</* /button */>}}
+
 
 
    
