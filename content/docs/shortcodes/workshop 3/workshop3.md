@@ -100,24 +100,14 @@ function setup() {
   mosaic.setUniform('resolution', resolution.value());
   pg = createGraphics(SAMPLE_RES * imageCells.width, SAMPLE_RES);
   mosaic.setUniform('cols', imageCells.width);
-  mododesort();
-}
-
-function mododesort() {
-  drawQuadrille(imageCells, { graphics: pg, cellLength: SAMPLE_RES, outlineWeight: 0 });
-  mosaic.setUniform('palette', pg);
-}
-
-function draw() {
-  cover({ texture: true });
-}
-
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  hashcolor();
 }
 */>}}
 ```
+# Ejemplo 2 - Coherencia Espacial
 
 {{< p5-iframe2 sketch="/vc/sketches/pixel1.js" width="610" height="610" >}}
+
+# Ejemplo 2 - Photomosaico LUMA
 
 {{< p5-iframe2 sketch="/vc/sketches/mosaic1.js" width="610" height="610" >}}

@@ -4,7 +4,6 @@ let mosaic;
 let video_src;
 let debug;
 let cols;
-// ui
 let resolution;
 let sel;
 let video_on;
@@ -34,7 +33,7 @@ function setup() {
   textureMode(NORMAL);
   noStroke();
   shader(mosaic);
-  mosaic.setUniform('luma', false);
+  mosaic.setUniform('avg', false);
   mosaic.setUniform('source', image_src);
   resolution = createSlider(1, 150, 50, 1);
   resolution.position(20, 550);
@@ -43,10 +42,11 @@ function setup() {
   mosaic.setUniform('resolution', resolution.value());
   pg = createGraphics(SAMPLE_RES * imageCells.width, SAMPLE_RES);
   mosaic.setUniform('cols', imageCells.width);
-  mododesort();
+  hashcolor();
 }
 
-function mododesort() {
+function hashcolor() {
+  imageCells.sort({ mode:'AVG',ascending: true, cellLength: SAMPLE_RES });
   drawQuadrille(imageCells, { graphics: pg, cellLength: SAMPLE_RES, outlineWeight: 0 });
   mosaic.setUniform('palette', pg);
 }
