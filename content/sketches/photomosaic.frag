@@ -24,7 +24,7 @@ varying vec4 vVertexColor;
 // interpolated texcoord (same name and type as in vertex shader)
 varying vec2 vTexCoord;
 
-float luma(vec3 color) {
+float LUMA(vec3 color) {
   return 0.299 * color.r + 0.587 * color.g + 0.114 * color.b;
 }
 
@@ -43,25 +43,30 @@ void main() {
   pasCoord = pasCoord / vec2(resolution);
   // get vec4 color hash key
   vec4 key = texture2D(source, pasCoord);
-  mediump float avg7;
-  mediump float luma7;
+
+  mediump float avgc;
+  mediump float lumac;
   mediump float zluma;
   mediump float rluma;
   mediump float zavg;
   mediump float ravg;
+
+  const select;
+
   if(avg){
-    avg7 =  AVG(key.rgb) * cols;
-    zavg = floor(avg7)+ symCoord.s;
+    avgc =  AVG(key.rgb) * cols;
+    zavg = floor(avgc)+ symCoord.s;
     ravg = zavg/cols;
     vec2 fcord = vec2(ravg,symCoord.t);
     vec4 paletteTex = texture2D(palette, fcord);
     gl_FragColor =  paletteTex;
   }else{
-    luma7 =  luma(key.rgb) * cols;
-    zluma = floor(luma7)+ symCoord.s;
+    lumac =  LUMA(key.rgb) * cols;
+    zluma = floor(lumac)+ symCoord.s;
     rluma = zluma/cols;
     vec2 fcord = vec2(rluma,symCoord.t);
     vec4 paletteTex = texture2D(palette, fcord);
     gl_FragColor =  paletteTex;
-  } 
-}
+  }
+
+

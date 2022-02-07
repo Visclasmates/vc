@@ -53,6 +53,7 @@ function draw() {
 El mosaico fotográfico es la técnica de crear una imagen o video con un conjunto de datos de imágenes pequeñas. Para implementarlo usando shaders es necesario primero crear una sola imagen de textura con todas las imágenes pequeñas que queramos usar, luego se fragmenta o pixela la imagen original dependiendo de la cantidad de fragmentos graficos ó imagenes que queramos usar, se realiza un calculo de cirtas caracteristicas de cada pixel de la imagen original para acomodar el fragmento de imagen mas adecuado.
 
 En este paso construimos el Photomosaic, para esto implementamos una clase llamada mosaic.js quien depende de la implementacion de shader pothomosaic.frag, la imagen webm y la imagen sobre la cual se realiza el photomosaic mandrill.png
+1. Codigo de clase de la pagina del curso prof.js
 
 ```tpl
 let imageCells;
@@ -111,3 +112,111 @@ function setup() {
 # Ejemplo 2 - Photomosaico LUMA
 
 {{< p5-iframe2 sketch="/vc/sketches/mosaic1.js" width="610" height="610" >}}
+
+# Referencias
+
+1. Codigo de clase de la pagina del curso prof.js, no tengo la referencia pues el archivo me fue compartido por uno de mis compañeros.
+
+```tpl
+let imageCells;
+let pg;
+let mosaic;
+let video_src;
+let debug;
+let cols;
+// ui
+let resolution;
+let sel;
+let video_on;
+let p;
+
+const SAMPLE_RES = 30;
+
+function preload() {
+  video_src = createVideo(['/sketches/shaders/mandrill.webm']);
+  video_src.hide(); // by default video shows up in separate dom
+  mosaic = readShader('/sketches/shaders/photomosaic.frag');
+  p = [];
+  for (let i = 1; i <= 30; i++) {
+    p.push(loadImage(`/sketches/shaders/paintings/p${i}.jpg`));
+  }
+}
+
+function setup() {
+  // shaders require WEBGL mode to work
+  createCanvas(650, 650, WEBGL);
+  colorMode(RGB, 1);
+  imageCells = createQuadrille(p);
+  textureMode(NORMAL);
+  noStroke();
+  shader(mosaic);
+  sel = createSelect();
+  sel.position(10, 125);
+  sel.option('keys');
+  sel.option('symbols');
+  sel.selected('symbols');
+  sel.changed(() => {
+    mosaic.setUniform('debug', sel.value() === 'keys');
+    mosaic.setUniform('color_on', false);
+  });
+  video_on = createCheckbox('video', false);
+  video_on.style('color', 'magenta');
+  video_on.changed(() => {
+    if (video_on.checked()) {
+      mosaic.setUniform('source', video_src);
+      video_src.loop();
+    } else {
+      mosaic.setUniform('source', random(p));
+      video_src.pause();
+    }
+  });
+  video_on.position(10, 80);
+  mosaic.setUniform('source', random(p));
+  resolution = createSlider(10, 200, SAMPLE_RES, 1);
+  resolution.position(10, 100);
+  resolution.style('width', '80px');
+  resolution.input(() => { mosaic.setUniform('resolution', resolution.value()) });
+  mosaic.setUniform('resolution', resolution.value());
+  pg = createGraphics(SAMPLE_RES * imageCells.width, SAMPLE_RES);
+  mosaic.setUniform('cols', imageCells.width);
+  sample();
+}
+
+function keyPressed() {
+  if (key === 'r' && !video_on.checked()) {
+    mosaic.setUniform('source', random(p));
+  }
+}
+
+function sample() {
+  if (pg.width !== SAMPLE_RES * imageCells.width) {
+    pg = createGraphics(SAMPLE_RES * imageCells.width, SAMPLE_RES);
+    mosaic.setUniform('cols', imageCells.width);
+  }
+  imageCells.sort({ ascending: true, cellLength: SAMPLE_RES });
+  drawQuadrille(imageCells, { graphics: pg, cellLength: SAMPLE_RES, outlineWeight: 0 });
+  mosaic.setUniform('palette', pg);
+}
+
+function draw() {
+  cover({ texture: true });
+}
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
+*/>}}
+
+2. Fragmen-Shader. Usamos como fuente el fragmen.shader de otro del grupo 7, al buscar ejemplos en github, 
+   Fue tomado como referencia para correr el ejemplo de clase me disculpo por el error de citarlo pues pense que era un ejemplo de clase. 
+   https://github.com/Computacion-Visual-Gr7/vc/blob/main/content/sketches/shaders/photomosaic.frag
+
+3. Otras implementaciones en el codigo de coherencia espacial.
+   https://visualcomputing.github.io/docs/shaders/spatial_coherence/
+
+4. Otras referencias de implementaciones semestres anteriores.
+   https://ccgomezn.github.io/vc/
+   https://edprietov.github.io/vc/
+
+
+   
